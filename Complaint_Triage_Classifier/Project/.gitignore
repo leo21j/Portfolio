@@ -1,0 +1,67 @@
+# --- Data: never commit real complaint records ---
+# The CFPB export contains narratives plus state, ZIP code, and exact dates.
+# Only the small synthetic sample is tracked.
+data/raw/*
+!data/raw/.gitkeep
+!data/raw/README.md
+!data/raw/complaints_sample.csv
+data/interim/*
+!data/interim/.gitkeep
+data/labeled/*
+!data/labeled/.gitkeep
+!data/labeled/README.md
+data/processed/*
+!data/processed/.gitkeep
+
+# --- Generated reports ---
+# predictions.csv and all_errors.csv are derived from the labeled data.
+reports/figures/*
+!reports/figures/.gitkeep
+reports/metrics/*
+!reports/metrics/.gitkeep
+reports/error_analysis/*
+!reports/error_analysis/.gitkeep
+
+# --- Models, checkpoints, experiment tracking ---
+models/
+checkpoints/
+outputs/
+wandb/
+mlruns/
+*.joblib
+*.pkl
+*.pt
+*.bin
+*.safetensors
+
+# --- Logs ---
+logs/
+*.log
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# --- Environments ---
+.venv/
+venv/
+env/
+.env
+.env.*
+
+# --- Notebooks ---
+.ipynb_checkpoints/
+
+# --- IDE / OS ---
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

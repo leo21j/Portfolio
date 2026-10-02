@@ -1,0 +1,22 @@
+# Normalize line endings so the repo behaves the same on Windows, Linux, and CI.
+* text=auto eol=lf
+
+# These break if they are ever checked out with CRLF.
+Makefile text eol=lf
+*.sh      text eol=lf
+*.slurm   text eol=lf
+Dockerfile text eol=lf
+
+*.py   text eol=lf
+*.yaml text eol=lf
+*.yml  text eol=lf
+*.md   text eol=lf
+*.toml text eol=lf
+*.csv  text eol=lf
+
+# Binary artifacts, should they ever be committed deliberately.
+*.png binary
+*.jpg binary
+*.pkl binary
+*.joblib binary
+*.safetensors binary

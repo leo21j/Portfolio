@@ -1,0 +1,341 @@
+triage_labels:
+  fraud_identity_risk:
+    display_name: "Fraud / scam / identity risk"
+    definition: >
+      Complaints involving suspected fraud, scams, identity theft, unauthorized
+      activity, account takeover, security freezes, fraud alerts, or misuse of
+      a consumer identity.
+    keywords:
+      - fraud
+      - fraudulent
+      - scam
+      - identity theft
+      - stolen identity
+      - unauthorized
+      - unauthorised
+      - account takeover
+      - hacked
+      - security freeze
+      - fraud alert
+      - embezzlement
+      - forged
+      - fake account
+      - not mine
+      - someone opened
+      - stolen card
+      - unauthorized transaction
+    products:
+      - Credit reporting or other personal consumer reports
+      - Credit reporting, credit repair services, or other personal consumer reports
+      - Credit reporting
+      - Credit card
+      - Credit card or prepaid card
+      - Checking or savings account
+      - Bank account or service
+      - Money transfer, virtual currency, or money service
+      - Money transfers
+    issues:
+      - Fraud or scam
+      - Problem with fraud alerts or security freezes
+      - Identity theft / Fraud / Embezzlement
+      - Unauthorized transactions or other transaction problem
+      - Improper use of your report
+      - Credit monitoring or identity theft protection services
+
+  billing_payment_dispute:
+    display_name: "Billing / payment dispute"
+    definition: >
+      Complaints about charges, fees, refunds, payments, disputed balances,
+      escrow, payment posting, duplicate charges, or funds not being available.
+    keywords:
+      - billing
+      - charged twice
+      - charge
+      - fee
+      - fees
+      - interest
+      - refund
+      - payment
+      - posted
+      - overcharged
+      - late fee
+      - escrow
+      - balance
+      - dispute
+      - unauthorized charge
+      - money was not available
+      - payment process
+    products:
+      - Credit card
+      - Credit card or prepaid card
+      - Checking or savings account
+      - Bank account or service
+      - Mortgage
+      - Debt collection
+      - Student loan
+      - Vehicle loan or lease
+      - Consumer Loan
+      - Payday loan, title loan, or personal loan
+      - Payday loan, title loan, personal loan, or advance loan
+      - Prepaid card
+      - Money transfer, virtual currency, or money service
+      - Money transfers
+    issues:
+      - Billing disputes
+      - Trouble during payment process
+      - Problem when making payments
+      - Problem with a purchase shown on your statement
+      - Fees or interest
+      - Charged fees or interest you didn't expect
+      - Problem with a lender or other company charging your account
+      - Loan servicing, payments, escrow account
+      - Money was not available when promised
+      - Problem with a purchase or transfer
+      - Problem caused by your funds being low
+      - Problems caused by my funds being low
+
+  account_access_management:
+    display_name: "Account access / login / account management"
+    definition: >
+      Complaints where the main operational issue is opening, closing, managing,
+      accessing, or using an account, card, report, wallet, or loan portal.
+    keywords:
+      - login
+      - log in
+      - sign in
+      - access
+      - locked out
+      - cannot access
+      - can't access
+      - password
+      - username
+      - account closed
+      - closing account
+      - open account
+      - mobile wallet
+      - card not working
+      - unable to use
+      - unable to get
+      - credit score
+      - credit report
+    products:
+      - Checking or savings account
+      - Bank account or service
+      - Credit card
+      - Credit card or prepaid card
+      - Prepaid card
+      - Credit reporting
+      - Credit reporting or other personal consumer reports
+      - Student loan
+      - Vehicle loan or lease
+      - Money transfer, virtual currency, or money service
+    issues:
+      - Managing an account
+      - Account opening, closing, or management
+      - Opening an account
+      - Closing an account
+      - Closing your account
+      - Deposits and withdrawals
+      - Trouble using your card
+      - Trouble using the card
+      - Unable to get your credit report or credit score
+      - Unable to get credit report/credit score
+      - Getting a credit card
+      - Getting a loan or lease
+      - Managing the loan or lease
+      - Managing, opening, or closing your mobile wallet account
+      - Other features, terms, or problems
+
+  documentation_processing_verification:
+    display_name: "Documentation / processing / verification issue"
+    definition: >
+      Complaints involving application processing, missing paperwork, document
+      validation, verification, investigation workflow, loan closing, refinancing,
+      or delayed administrative processing.
+    keywords:
+      - document
+      - documents
+      - paperwork
+      - verification
+      - verify
+      - application
+      - processing
+      - investigation
+      - submitted
+      - proof
+      - evidence
+      - records
+      - missing information
+      - delayed
+      - closed on
+      - refinance
+      - mortgage application
+    products:
+      - Mortgage
+      - Student loan
+      - Credit reporting
+      - Credit reporting, credit repair services, or other personal consumer reports
+      - Debt collection
+      - Vehicle loan or lease
+      - Debt or credit management
+    issues:
+      - Problem with a company's investigation into an existing problem
+      - Problem with a credit reporting company's investigation into an existing problem
+      - Credit reporting company's investigation
+      - Disclosure verification of debt
+      - Written notification about debt
+      - Applying for a mortgage or refinancing an existing mortgage
+      - Closing on a mortgage
+      - Settlement process and costs
+      - Application, originator, mortgage broker
+      - Incorrect information on your report
+      - Incorrect information on credit report
+
+  customer_service_failure:
+    display_name: "Customer service failure"
+    definition: >
+      Complaints primarily about poor service, communication failures,
+      unresponsive representatives, repeated transfers, disrespectful treatment,
+      unanswered calls, or failure to follow up.
+    keywords:
+      - representative
+      - agent
+      - customer service
+      - no response
+      - never called
+      - never responded
+      - call back
+      - hung up
+      - rude
+      - transferred
+      - supervisor
+      - communication
+      - ignored
+      - waited
+      - hold
+      - complaint
+      - contacted
+    products:
+      - Debt collection
+      - Mortgage
+      - Checking or savings account
+      - Bank account or service
+      - Credit card
+      - Credit card or prepaid card
+      - Student loan
+      - Vehicle loan or lease
+    issues:
+      - Communication tactics
+      - Dealing with your lender or servicer
+      - Dealing with my lender or servicer
+      - Other
+      - Other features, terms, or problems
+
+  legal_compliance_regulatory:
+    display_name: "Legal / compliance / regulatory concern"
+    definition: >
+      Complaints involving legal threats, regulatory violations, collection
+      practices, foreclosure, litigation, reporting violations, improper sharing,
+      or actions that may require compliance/legal review.
+    keywords:
+      - legal
+      - lawsuit
+      - sue
+      - sued
+      - attorney
+      - lawyer
+      - court
+      - regulation
+      - regulatory
+      - violation
+      - fair credit
+      - fcra
+      - fdcp
+      - compliance
+      - foreclosure
+      - garnishment
+      - threat
+      - threatened
+      - illegal
+      - improper
+      - share information
+      - contact someone
+      - eviction
+      - bankruptcy
+    products:
+      - Debt collection
+      - Mortgage
+      - Credit reporting
+      - Credit reporting, credit repair services, or other personal consumer reports
+      - Debt or credit management
+      - Payday loan
+      - Payday loan, title loan, or personal loan
+      - Payday loan, title loan, personal loan, or advance loan
+    issues:
+      - Took or threatened to take negative or legal action
+      - Threatened to contact someone or share information improperly
+      - Taking/threatening an illegal action
+      - Loan modification,collection,foreclosure
+      - Struggling to pay mortgage
+      - Attempts to collect debt not owed
+      - Cont'd attempts collect debt not owed
+      - False statements or representation
+      - Improper contact or sharing of info
+      - Improper use of your report
+      - Problems when you are unable to pay
+
+escalation:
+  positive_label: escalate
+  negative_label: do_not_escalate
+  high_risk_keywords:
+    - identity theft
+    - fraud
+    - scam
+    - unauthorized
+    - account takeover
+    - hacked
+    - stolen
+    - forged
+    - lawsuit
+    - attorney
+    - lawyer
+    - court
+    - legal action
+    - foreclosure
+    - eviction
+    - garnishment
+    - bankruptcy
+    - harassment
+    - threatened
+    - illegal
+    - servicemember
+    - older american
+    - elder
+    - military
+    - homeless
+    - urgent
+    - emergency
+  high_risk_issues:
+    - Fraud or scam
+    - Identity theft / Fraud / Embezzlement
+    - Unauthorized transactions or other transaction problem
+    - Took or threatened to take negative or legal action
+    - Taking/threatening an illegal action
+    - Loan modification,collection,foreclosure
+    - Threatened to contact someone or share information improperly
+    - Problem with fraud alerts or security freezes
+  high_risk_company_responses:
+    - Untimely response
+    - In progress
+  high_risk_public_responses:
+    - Company disputes the facts presented in the complaint
+    - Company can't verify or dispute the facts in the complaint
+  high_risk_tags:
+    - Older American
+    - Servicemember
+
+weak_labeling:
+  # Rows scoring below this confidence are sent to the manual review queue.
+  review_confidence_threshold: 0.72
+  # Cap per label so one frequent category cannot fill the whole queue.
+  max_review_rows_per_label: 1500

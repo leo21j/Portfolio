@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "complaint-triage-escalation-classifier"
+version = "0.1.0"
+description = "Transformer-based complaint triage and escalation classifier for CFPB complaint narratives."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Leonardo" }]
+# Upper bounds are deliberate. The training and evaluation code carries
+# compatibility shims for renamed Transformers arguments, so a major version
+# jump is a real risk rather than a theoretical one.
+dependencies = [
+    "pandas>=2.1,<3",
+    "numpy>=1.24,<3",
+    "scikit-learn>=1.3,<2",
+    "pyyaml>=6.0,<7",
+    "matplotlib>=3.8,<4",
+    "joblib>=1.3,<2",
+    "scipy>=1.10,<2",
+    "torch>=2.1,<3",
+    "transformers>=4.40,<5",
+    "datasets>=2.18,<5",
+    # Not imported directly; required by transformers.Trainer for PyTorch training.
+    "accelerate>=0.28,<2",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4,<10",
+    "ruff>=0.4,<1",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+# Pinned explicitly so a new ruff release cannot change what CI enforces.
+# E/W: pycodestyle, F: pyflakes, I: import sorting, UP: pyupgrade, B: bugbear.
+select = ["E", "W", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"
