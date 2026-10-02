@@ -1,0 +1,30 @@
+[project]
+name = "jinder"
+version = "0.1.0"
+description = "Résumé-driven job and grant matching with hybrid retrieval on AWS."
+readme = "README.md"
+requires-python = ">=3.10"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+extend-exclude = ["lambda_package", ".venv"]
+
+[tool.ruff.lint]
+# Pinned explicitly so a new ruff release cannot change what CI enforces.
+# E/W: pycodestyle, F: pyflakes, I: import sorting, UP: pyupgrade, B: bugbear.
+select = ["E", "W", "F", "I", "UP", "B"]
+
+[tool.ruff.lint.flake8-bugbear]
+# Depends(), File(), Form() and Query() in argument defaults are the documented
+# FastAPI idiom, not the mutable-default bug B008 is meant to catch.
+extend-immutable-calls = [
+    "fastapi.Depends",
+    "fastapi.File",
+    "fastapi.Form",
+    "fastapi.Query",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

@@ -1,0 +1,27 @@
+# PyTorch is installed separately because the right wheel depends on your
+# hardware. CPU is fine for inference:
+#   pip install torch --index-url https://download.pytorch.org/whl/cpu
+# For CUDA 12.1:
+#   pip install torch --index-url https://download.pytorch.org/whl/cu121
+
+# --- Web service ---
+fastapi>=0.115,<1
+uvicorn[standard]>=0.30,<1
+pydantic>=2.9,<3
+python-multipart>=0.0.20,<0.1   # required by FastAPI for file uploads
+python-dotenv>=1.0,<2
+
+# --- AWS ---
+boto3>=1.35,<2
+
+# --- Retrieval ---
+sentence-transformers>=3.0,<6
+faiss-cpu>=1.8,<2
+rank-bm25>=0.2.2,<0.3
+numpy>=1.26,<3
+
+# --- Résumé parsing (provides the `fitz` module) ---
+PyMuPDF>=1.24,<2
+
+# --- HTTP, used by the ingestion Lambda ---
+requests>=2.32,<3

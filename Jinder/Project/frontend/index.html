@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Jinder | Jobs &amp; Grants Matcher</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Inline CSS -->
+  <style>
+    :root {
+      --color-bg: #f3f4f6;
+      --color-card: #ffffff;
+      --color-primary: #005bbb;
+      --color-primary-soft: #e0edff;
+      --color-accent: #00b894;
+      --color-border: #e5e7eb;
+      --color-text: #111827;
+      --color-muted: #6b7280;
+      --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.12);
+      --radius-lg: 1.25rem;
+      --radius-md: 0.75rem;
+      --radius-pill: 999px;
+      --transition-fast: 0.18s ease-out;
+      --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+    }
+
+    *,*::before,*::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      color: var(--color-text);
+      background: radial-gradient(circle at top left, #dbeafe, #f9fafb 40%);
+    }
+
+    .app-shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top bar */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 1.5rem;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(229, 231, 235, 0.9);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-weight: 700;
+    }
+
+    .logo-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 40%;
+      background: linear-gradient(135deg, var(--color-primary), #00b4d8);
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 0.9rem;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+    }
+
+    .logo-text {
+      letter-spacing: 0.03em;
+    }
+
+    .logo-tag {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: var(--color-muted);
+    }
+
+    /* Nav */
+    .topnav {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .nav-link {
+      border: none;
+      background: transparent;
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      color: var(--color-muted);
+      cursor: pointer;
+      transition: background var(--transition-fast), color var(--transition-fast),
+        transform var(--transition-fast);
+    }
+
+    .nav-link:hover {
+      background: #e5edff;
+      color: var(--color-primary);
+      transform: translateY(-0.5px);
+    }
+
+    .nav-link.active {
+      background: var(--color-primary);
+      color: #fff;
+    }
+
+    .topbar-auth {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.85rem;
+    }
+
+    .user-label {
+      color: var(--color-muted);
+    }
+
+    /* Buttons */
+    .btn {
+      border-radius: var(--radius-pill);
+      border: none;
+      padding: 0.55rem 1.1rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      transition: background var(--transition-fast), transform var(--transition-fast),
+        box-shadow var(--transition-fast), color var(--transition-fast);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--color-primary), #2563eb);
+      color: #fff;
+      box-shadow: 0 15px 32px rgba(37, 99, 235, 0.5);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 18px 40px rgba(37, 99, 235, 0.6);
+    }
+
+    .btn-secondary {
+      background: #e5edff;
+      color: var(--color-primary);
+    }
+
+    .btn-secondary:hover {
+      background: #d1ddff;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid #d1d5db;
+      color: var(--color-muted);
+    }
+
+    .btn-ghost:hover {
+      background: #f3f4f6;
+    }
+
+    .btn.small {
+      padding: 0.25rem 0.7rem;
+      font-size: 0.8rem;
+    }
+
+    .btn.full-width {
+      width: 100%;
+    }
+
+    .btn-group-vertical {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    /* Main layout */
+    .main {
+      flex: 1;
+      padding: 1.75rem 1.5rem 2.5rem;
+      max-width: 1120px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .view {
+      display: none;
+    }
+
+    .view.view-active {
+      display: block;
+    }
+
+    .view-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.1rem;
+    }
+
+    .view-subtitle {
+      margin: 0.2rem 0 0;
+      color: var(--color-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Hero */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 2.2rem;
+      align-items: center;
+    }
+
+    .hero-text h1 {
+      font-size: clamp(1.8rem, 2.5vw, 2.4rem);
+      margin-bottom: 0.6rem;
+    }
+
+    .hero-lead {
+      color: var(--color-muted);
+      font-size: 0.98rem;
+      max-width: 30rem;
+    }
+
+    .hero-bullets {
+      margin: 1.1rem 0 0;
+      padding-left: 1.1rem;
+      color: var(--color-text);
+      font-size: 0.92rem;
+    }
+
+    .hero-bullets li + li {
+      margin-top: 0.35rem;
+    }
+
+    /* Cards */
+    .card {
+      background: linear-gradient(145deg, #ffffff, #f9fafb);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.2rem 1.4rem;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+    }
+
+    .card-header-inline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .auth-card {
+      max-width: 380px;
+      margin-left: auto;
+    }
+
+    .tab-header {
+      display: flex;
+      gap: 0.4rem;
+      margin-bottom: 0.9rem;
+      padding: 0.15rem;
+      background: #f3f4f6;
+      border-radius: var(--radius-pill);
+    }
+
+    .tab-link {
+      flex: 1;
+      border-radius: var(--radius-pill);
+      border: none;
+      padding: 0.35rem 0.2rem;
+      font-size: 0.83rem;
+      cursor: pointer;
+      background: transparent;
+      color: var(--color-muted);
+      transition: background var(--transition-fast), color var(--transition-fast),
+        transform var(--transition-fast);
+    }
+
+    .tab-link.active {
+      background: #ffffff;
+      color: var(--color-primary);
+      box-shadow: 0 5px 16px rgba(148, 163, 184, 0.35);
+      transform: translateY(-1px);
+    }
+
+    /* Forms */
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    label {
+      font-size: 0.82rem;
+      font-weight: 500;
+    }
+
+    input {
+      border-radius: 999px;
+      border: 1px solid var(--color-border);
+      padding: 0.55rem 0.9rem;
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+      background: #f9fafb;
+      transition: border var(--transition-fast), box-shadow var(--transition-fast),
+        background var(--transition-fast);
+    }
+
+    input:focus {
+      border-color: var(--color-primary);
+      background: #ffffff;
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.3);
+    }
+
+    .hint {
+      font-size: 0.76rem;
+      color: var(--color-muted);
+    }
+
+    .field-error {
+      font-size: 0.76rem;
+      color: #dc2626;
+      min-height: 0.9rem;
+    }
+
+    .password-wrapper {
+      display: flex;
+      align-items: center;
+      border-radius: 999px;
+      border: 1px solid var(--color-border);
+      background: #f9fafb;
+      padding-right: 0.15rem;
+      transition: border var(--transition-fast), box-shadow var(--transition-fast),
+        background var(--transition-fast);
+    }
+
+    .password-wrapper:focus-within {
+      border-color: var(--color-primary);
+      background: #ffffff;
+      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.3);
+    }
+
+    .password-wrapper input {
+      border: none;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .password-toggle {
+      border: none;
+      background: transparent;
+      font-size: 0.78rem;
+      padding: 0.2rem 0.8rem;
+      cursor: pointer;
+      color: var(--color-muted);
+    }
+
+    .password-toggle:hover {
+      color: var(--color-primary);
+    }
+
+    .auth-footer-text {
+      margin: 0.2rem 0 0;
+      font-size: 0.8rem;
+      color: var(--color-muted);
+    }
+
+    .link-button {
+      border: none;
+      background: none;
+      padding: 0;
+      margin: 0;
+      font-size: 0.8rem;
+      color: var(--color-primary);
+      cursor: pointer;
+    }
+
+    .link-button:hover {
+      text-decoration: underline;
+    }
+
+    .auth-hint {
+      margin-top: 0.8rem;
+      font-size: 0.78rem;
+      color: var(--color-muted);
+    }
+
+    .auth-hint code {
+      font-size: 0.76rem;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+      gap: 1.4rem;
+    }
+
+    .text-muted {
+      color: var(--color-muted);
+      font-size: 0.85rem;
+    }
+
+    .profile-subheading {
+      margin-top: 1.1rem;
+      margin-bottom: 0.3rem;
+      font-size: 0.9rem;
+    }
+
+    .profile-resume-block,
+    .profile-matches-list {
+      font-size: 0.85rem;
+    }
+
+    .profile-matches-list .match-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.25rem 0.7rem;
+      border-radius: var(--radius-pill);
+      background: #eff6ff;
+      margin: 0.15rem;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.1rem 0.55rem;
+      border-radius: var(--radius-pill);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .pill-soft {
+      background: #eef2ff;
+      color: #3730a3;
+    }
+
+    .pill-admin {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    /* Dropzone */
+    .dropzone {
+      display: block;
+      border: 1.5px dashed #cbd5f5;
+      border-radius: var(--radius-md);
+      padding: 0.9rem;
+      cursor: pointer;
+      background: rgba(255, 255, 255, 0.9);
+      transition: border var(--transition-fast), background var(--transition-fast),
+        transform var(--transition-fast), box-shadow var(--transition-fast);
+    }
+
+    .dropzone-inner {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .dropzone-icon {
+      font-size: 1.6rem;
+    }
+
+    .dropzone-title {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .dropzone-subtitle {
+      margin: 0.1rem 0 0;
+      font-size: 0.8rem;
+      color: var(--color-muted);
+    }
+
+    .dropzone:hover,
+    .dropzone.dropzone-hover {
+      border-color: var(--color-primary);
+      box-shadow: 0 12px 25px rgba(37, 99, 235, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .resume-meta {
+      margin-top: 0.8rem;
+      padding: 0.6rem 0.8rem;
+      border-radius: var(--radius-md);
+      background: #eff6ff;
+      font-size: 0.85rem;
+    }
+
+    .resume-meta p {
+      margin: 0.1rem 0;
+    }
+
+    .matches-list {
+      margin-top: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .match-card {
+      border-radius: var(--radius-md);
+      border: 1px solid #e5e7eb;
+      padding: 0.6rem 0.75rem;
+      background: #f9fafb;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      font-size: 0.85rem;
+    }
+
+    .match-title-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .match-title {
+      font-weight: 600;
+    }
+
+    .match-score {
+      font-weight: 600;
+      color: var(--color-accent);
+      font-size: 0.8rem;
+    }
+
+    .match-meta {
+      display: flex;
+      gap: 0.6rem;
+      font-size: 0.78rem;
+      color: var(--color-muted);
+    }
+
+    .match-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+      margin-top: 0.2rem;
+      font-size: 0.75rem;
+    }
+
+    .match-tag {
+      padding: 0.15rem 0.55rem;
+      border-radius: var(--radius-pill);
+      background: #e5edff;
+    }
+
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      margin-top: 0.5rem;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+
+    .data-table th,
+    .data-table td {
+      border-bottom: 1px solid #e5e7eb;
+      padding: 0.4rem 0.55rem;
+      text-align: left;
+    }
+
+    .data-table th {
+      font-weight: 600;
+      font-size: 0.78rem;
+      color: var(--color-muted);
+    }
+
+    .data-table tr:hover td {
+      background: #f9fafb;
+    }
+
+    .maintenance-log {
+      margin-top: 0.8rem;
+      padding-top: 0.5rem;
+      border-top: 1px dashed #e5e7eb;
+      font-size: 0.78rem;
+      max-height: 180px;
+      overflow-y: auto;
+    }
+
+    .footer {
+      padding: 0.9rem 1.5rem 1.2rem;
+      border-top: 1px solid rgba(229, 231, 235, 0.8);
+      font-size: 0.8rem;
+      color: var(--color-muted);
+      text-align: center;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 1.1rem;
+      right: 1.2rem;
+      background: #111827;
+      color: #fff;
+      padding: 0.7rem 1rem;
+      border-radius: var(--radius-md);
+      font-size: 0.82rem;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.7);
+      opacity: 0;
+      transform: translateY(12px);
+      pointer-events: none;
+      transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+      max-width: 260px;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .toast.success {
+      background: linear-gradient(135deg, #16a34a, #22c55e);
+    }
+
+    .toast.error {
+      background: linear-gradient(135deg, #dc2626, #f97316);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    hr.card-divider {
+      border: none;
+      border-top: 1px dashed #e5e7eb;
+      margin: 0.8rem 0;
+    }
+
+    .compact-form {
+      gap: 0.55rem;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .auth-card {
+        max-width: 100%;
+        margin: 0;
+      }
+
+      .main {
+        padding-inline: 1rem;
+      }
+
+      .grid-2 {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .topbar {
+        flex-wrap: wrap;
+        gap: 0.65rem;
+      }
+
+      .topnav {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .topbar-auth {
+        margin-left: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="logo">
+        <span class="logo-mark">J</span>
+        <span class="logo-text">Jinder</span>
+        <span class="logo-tag">cloud</span>
+      </div>
+
+      <nav class="topnav">
+        <button class="nav-link active" data-view="landing">Home</button>
+        <button class="nav-link requires-auth hidden" data-view="dashboard">Matches</button>
+        <button class="nav-link requires-auth hidden" data-view="profile">Profile</button>
+        <button class="nav-link requires-admin hidden" data-view="admin">Admin</button>
+      </nav>
+
+      <div class="topbar-auth">
+        <span id="currentUserLabel" class="user-label">Guest</span>
+        <button id="logoutBtn" class="btn btn-ghost small hidden">Log out</button>
+      </div>
+    </header>
+
+    <main class="main">
+      <!-- Landing -->
+      <section id="view-landing" class="view view-active">
+        <div class="hero">
+          <div class="hero-text">
+            <h1>Discover curated jobs &amp; grants in one place.</h1>
+            <p class="hero-lead">
+              Jinder is a cloud-based service to discover curated jobs and grants
+              from multiple platforms, without having to open ten tabs.
+            </p>
+
+            <ul class="hero-bullets">
+              <li>🔍 Search once and see roles from different job portals.</li>
+              <li>⏱️ Save time with a clean, simple interface for students and professionals.</li>
+              <li>📬 Get notified when new opportunities match your profile <span class="pill pill-soft">coming soon</span>.</li>
+            </ul>
+          </div>
+
+          <div class="auth-card card">
+            <div class="tab-header">
+              <button class="tab-link active" data-auth-tab="login">Log in</button>
+              <button class="tab-link" data-auth-tab="signup">Sign up</button>
+            </div>
+
+            <!-- Login -->
+            <form id="loginForm" class="form auth-form" data-mode="login">
+              <div class="form-group">
+                <label for="loginEmail">Email</label>
+                <input type="email" id="loginEmail" required placeholder="you@example.com" />
+                <small class="field-error" data-error-for="loginEmail"></small>
+              </div>
+
+              <div class="form-group password-group">
+                <label for="loginPassword">Password</label>
+                <div class="password-wrapper">
+                  <input type="password" id="loginPassword" required minlength="6" placeholder="••••••••" />
+                  <button type="button" class="password-toggle" data-toggle-password="loginPassword">Show</button>
+                </div>
+                <small class="hint">Use at least 6 characters with letters and numbers.</small>
+                <small class="field-error" data-error-for="loginPassword"></small>
+              </div>
+
+              <button type="submit" class="btn btn-primary full-width">Log in</button>
+
+              <p class="auth-footer-text">
+                Not a user yet?
+                <button type="button" class="link-button" id="openSignup">Sign up</button>
+              </p>
+            </form>
+
+            <!-- Signup (disabled demo) -->
+            <form id="signupForm" class="form auth-form hidden" data-mode="signup">
+              <div class="form-group">
+                <label for="signupEmail">Email</label>
+                <input type="email" id="signupEmail" required placeholder="you@example.com" />
+                <small class="field-error" data-error-for="signupEmail"></small>
+              </div>
+
+              <div class="form-group password-group">
+                <label for="signupPassword">Password</label>
+                <div class="password-wrapper">
+                  <input type="password" id="signupPassword" required minlength="6" placeholder="Create a strong password" />
+                  <button type="button" class="password-toggle" data-toggle-password="signupPassword">Show</button>
+                </div>
+                <small class="hint">At least 6 characters, with letters and numbers.</small>
+                <small class="field-error" data-error-for="signupPassword"></small>
+              </div>
+
+              <div class="form-group">
+                <label for="signupPasswordConfirm">Confirm password</label>
+                <input type="password" id="signupPasswordConfirm" required minlength="6" placeholder="Repeat your password" />
+                <small class="field-error" data-error-for="signupPasswordConfirm"></small>
+              </div>
+
+              <button type="submit" class="btn btn-primary full-width">Create account</button>
+
+              <p class="auth-footer-text">
+                Already have an account?
+                <button type="button" class="link-button" id="openLogin">Log in</button>
+              </p>
+            </form>
+
+            <p class="auth-hint">
+              <strong>No backend running?</strong> Explore the interface with
+              sample state, no account needed:
+              <button type="button" class="link-button" data-demo-role="user">
+                as a user
+              </button>
+              or
+              <button type="button" class="link-button" data-demo-role="admin">
+                as an admin
+              </button>.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dashboard -->
+      <section id="view-dashboard" class="view">
+        <div class="view-header">
+          <div>
+            <h2>Your matches</h2>
+            <p class="view-subtitle">
+              Upload your resume and see curated jobs and grants that match your profile.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>Upload resume</h3>
+            <p class="text-muted">PDF only. We’ll use it to extract your skills and experience.</p>
+
+            <label class="dropzone" id="resumeDropzone">
+              <input type="file" id="resumeInput" accept="application/pdf,.pdf" hidden />
+              <div class="dropzone-inner">
+                <div class="dropzone-icon">📄</div>
+                <div>
+                  <p class="dropzone-title">Click to choose a PDF</p>
+                  <p class="dropzone-subtitle">or drag &amp; drop a resume here</p>
+                </div>
+              </div>
+            </label>
+
+            <div id="resumeMeta" class="resume-meta hidden">
+              <p><strong>Current resume</strong></p>
+              <p id="resumeFilename"></p>
+              <p class="text-muted" id="resumeDate"></p>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-inline">
+              <h3>Matching results</h3>
+              <span class="pill pill-soft" id="matchCountPill">0 matches</span>
+            </div>
+
+            <p class="text-muted" id="matchHint">
+              Upload a resume to generate sample matches.
+            </p>
+
+            <div id="matchesContainer" class="matches-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Profile -->
+      <section id="view-profile" class="view">
+        <div class="view-header">
+          <div>
+            <h2>Profile</h2>
+            <p class="view-subtitle">
+              Manage your account details, resume and matched results.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>Account settings</h3>
+
+            <form id="emailForm" class="form compact-form">
+              <div class="form-group">
+                <label for="profileEmail">Email</label>
+                <input type="email" id="profileEmail" required />
+                <small class="field-error" data-error-for="profileEmail"></small>
+              </div>
+              <button type="submit" class="btn btn-primary">Save email</button>
+            </form>
+
+            <hr class="card-divider" />
+
+            <form id="passwordForm" class="form compact-form">
+              <div class="form-group">
+                <label for="profilePassword">New password</label>
+                <input type="password" id="profilePassword" minlength="6" placeholder="Set a new password" />
+                <small class="hint">Password won’t actually be changed in this demo.</small>
+                <small class="field-error" data-error-for="profilePassword"></small>
+              </div>
+
+              <div class="form-group">
+                <label for="profilePasswordConfirm">Confirm new password</label>
+                <input type="password" id="profilePasswordConfirm" minlength="6" placeholder="Repeat your new password" />
+                <small class="field-error" data-error-for="profilePasswordConfirm"></small>
+              </div>
+
+              <button type="submit" class="btn btn-secondary">Update password</button>
+            </form>
+          </div>
+
+          <div class="card">
+            <h3>Resume &amp; matches</h3>
+
+            <div id="profileResumeBlock" class="profile-resume-block text-muted">
+              No resume uploaded yet.
+            </div>
+
+            <h4 class="profile-subheading">Recent matches</h4>
+            <div id="profileMatches" class="profile-matches-list text-muted">
+              No matches yet. Upload a resume from the Matches page.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Admin -->
+      <section id="view-admin" class="view">
+        <div class="view-header">
+          <div>
+            <h2>Admin dashboard</h2>
+            <p class="view-subtitle">
+              Monitor users and perform basic database maintenance tasks.
+            </p>
+          </div>
+          <span class="pill pill-soft pill-admin">Admin only</span>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>Users</h3>
+            <p class="text-muted">
+              Real Jinder Users
+
+            </p>
+
+            <div class="table-wrapper">
+              <table class="data-table" id="adminUsersTable">
+                <thead>
+                  <tr>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Last login</th>
+                    <th>Resumes</th>
+                    <th>Matches</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Database maintenance</h3>
+            <p class="text-muted">
+              Prototype actions to demonstrate the admin workflow.
+            </p>
+
+            <div class="btn-group-vertical">
+              <button class="btn btn-primary" data-maintenance="reindex">
+                Rebuild search indexes
+              </button>
+              <button class="btn btn-secondary" data-maintenance="cleanup">
+                Run stale-data cleanup
+              </button>
+              <button class="btn btn-secondary" data-maintenance="backup">
+                Trigger backup snapshot
+              </button>
+              <button class="btn btn-ghost" data-maintenance="health">
+                Check DB health
+              </button>
+            </div>
+
+            <div id="maintenanceLog" class="maintenance-log text-muted">
+              No maintenance actions yet.
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>© <span id="year"></span> Jinder. Built as a cloud project demo.</p>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- JS file -->
+  
+  <script src="/static/app.js"></script>
+</body>
+</html>

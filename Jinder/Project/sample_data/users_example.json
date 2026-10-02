@@ -1,0 +1,1 @@
+[{"user_id":"u1","email":"alice@example.com","name":"Alice","locations":["California","Remote"],"keywords":["engineer","software"],"include_jobs":true,"include_grants":false,"min_score":1.0},{"user_id":"u2","email":"bob@example.com","name":"Bob","locations":["california","remote"],"keywords":["data","ml"],"include_jobs":true,"include_grants":true,"min_score":1.0}]

@@ -1,0 +1,103 @@
+- JSearch:
+{
+  "status": "...",         // e.g. "OK"
+  "request_id": "...",     // request UUID/string
+  "parameters": { ... },   // whatever query params JSearch returns
+  "data": [                // <-- list of job objects
+    {
+      "job_id": "...",
+      "job_title": "...",
+      "employer_name": "...",
+      "job_description": "...",
+      "job_city": "...",
+      "job_state": "...",
+      "job_country": "...",
+      "job_employment_type": "...",
+      "job_employment_types": [...],
+      "job_min_salary": ...,
+      "job_max_salary": ...,
+      "job_salary_period": "...",
+      "job_apply_link": "...",
+      "job_apply_is_direct": ...,
+      ...
+    },
+    ...
+  ]
+}
+
+- USAJOBS:
+{
+  "LanguageCode": "EN",
+  "SearchParameters": { ... },
+  "SearchResult": {
+    "SearchResultCount": 25,
+    "SearchResultCountAll": 1234,
+    "SearchResultItems": [
+      {
+        "MatchedObjectId": "848570900",
+        "MatchedObjectDescriptor": {
+          "PositionID": "...",
+          "PositionTitle": "...",
+          "OrganizationName": "...",
+          "DepartmentName": "...",
+          "SubAgency": "...",
+          "JobCategory": [...],
+          "QualificationSummary": "...",
+          "UserArea": {
+            "Details": {
+              "JobSummary": "...",
+              ...
+            }
+          },
+          "PositionLocation": [
+            {
+              "CityName": "...",
+              "CountrySubDivisionCode": "...",
+              "LocationName": "...",
+              ...
+            }
+          ],
+          ...
+        },
+        "RelevanceRank": 1
+      },
+      ...
+    ],
+    "UserArea": { ... }
+  }
+}
+
+- GRANTS:
+{
+  "errorcode": 0,
+  "msg": "Webservice Succeeds",
+  "token": "...",
+  "data": {
+    "searchParams": { ... },
+    "hitCount": 308,
+    "startRecord": 0,
+    "oppHits": [
+      {
+        "id": "334326",
+        "number": "21-595",
+        "title": "Tribal Colleges and Universities Program",
+        "agencyCode": "NSF",
+        "agency": "U.S. National Science Foundation",
+        "openDate": "06/24/2021",
+        "closeDate": "01/12/2026",
+        "oppStatus": "posted",
+        "docType": "synopsis",
+        "cfdaList": ["47.076"]
+      },
+      ...
+    ],
+    "oppStatusOptions": [ ... ],
+    "dateRangeOptions": [ ... ],
+    "eligibilities": [ ... ],
+    "fundingCategories": [ ... ],
+    "fundingInstruments": [ ... ],
+    "agencies": [ ... ],
+    "accessKey": "",
+    "errorMsgs": []
+  }
+}
