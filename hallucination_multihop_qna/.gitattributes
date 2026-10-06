@@ -1,0 +1,20 @@
+# Normalize line endings so the repo behaves the same on Windows, Linux, and CI.
+* text=auto eol=lf
+
+*.py    text eol=lf
+*.yaml  text eol=lf
+*.yml   text eol=lf
+*.md    text eol=lf
+*.toml  text eol=lf
+*.txt   text eol=lf
+*.csv   text eol=lf
+*.json  text eol=lf
+
+# Keep prediction dumps out of diffs; they are data, not reviewable source.
+results/predictions/*.json -diff linguist-generated
+
+*.ipynb text eol=lf linguist-documentation
+
+*.faiss binary
+*.pkl   binary
+*.index binary

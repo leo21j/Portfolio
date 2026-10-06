@@ -1,0 +1,59 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          lfs: false          # nothing in LFS; keeps the checkout small
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: pip
+
+      # The test suite covers pure logic — RRF fusion, config validation,
+      # embedding normalization, sentence selection — so it needs neither the
+      # embedding model nor a running Ollama server.
+      - name: Install test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install ruff pytest numpy pyyaml faiss-cpu rank-bm25 rapidfuzz ujson
+
+      - name: Lint
+        run: ruff check .
+
+      - name: Test
+        run: pytest
+
+      # Guards against the datasets or the FAISS index being committed again.
+      # The ceiling accommodates results/predictions/full_dev_v39.json
+      # (~8.1 MB), the full 7,405-example run behind the headline metric.
+      - name: Check that no large artifacts are tracked
+        run: |
+          limit=$((10 * 1024 * 1024))
+          over=$(git ls-files -z | xargs -0 -I{} sh -c \
+            'test -f "{}" && s=$(wc -c <"{}") && [ "$s" -gt '"$limit"' ] && echo "{} ($s bytes)"' || true)
+          if [ -n "$over" ]; then
+            echo "::error::Files over 10 MB are tracked:"; echo "$over"; exit 1
+          fi
+          echo "No tracked file exceeds 10 MB."
+
+      - name: Check that metrics files are valid JSON
+        run: |
+          python - <<'PY'
+          import json, pathlib, sys
+          bad = []
+          for p in pathlib.Path("results/metrics").glob("*.json"):
+              try:
+                  json.loads(p.read_text(encoding="utf-8"))
+              except Exception as e:
+                  bad.append(f"{p}: {e}")
+          if bad:
+              print("::error::Invalid metrics JSON:"); print(*bad, sep="\n"); sys.exit(1)
+          print("All metrics files parse as JSON.")
+          PY

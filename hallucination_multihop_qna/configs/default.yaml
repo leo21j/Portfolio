@@ -1,0 +1,131 @@
+# ============================================================
+# HotpotQA pipeline configuration
+#
+# These are the settings of the v39 full-dev-set run reported in the README.
+# Every key maps to a dataclass in scripts/config.py; unknown keys are
+# reported at load time rather than silently ignored.
+# ============================================================
+
+# --- Data ---
+data:
+  dev_distractor: "data/hotpot_dev_distractor_v1.json"
+  dev_fullwiki: "data/hotpot_dev_fullwiki_v1.json"
+  test_fullwiki: "data/hotpot_test_fullwiki_v1.json"
+  limit: null # max examples to load (null = all)
+
+# --- Retriever ---
+retriever:
+  # Ollama embedding model for dense retrieval (4,096-dim, 40K-token context)
+  embed_model: "qwen3-embedding:8b"
+  ollama_base_url: "http://localhost:11434"
+  device: "auto" # CUDA > MPS > CPU
+  batch_size: 32 # passages per embedding request
+
+  # Hybrid scoring. alpha weights dense retrieval; (1 - alpha) weights BM25.
+  #   1.0 = dense only, 0.5 = equal, 0.0 = BM25 only
+  alpha: 0.7
+  alpha_bridge: 0.6 # bridge questions lean on semantic similarity
+  alpha_comparison: 0.5 # comparison questions name both entities, so keywords matter
+
+  # Reciprocal Rank Fusion constant. The usual value is 60; a lower k widens
+  # the score gap between the top ranks.
+  rrf_k: 20
+
+  # Top-N candidates taken from each retriever before fusion
+  candidate_pool_size: 200
+  top_k: 20 # candidates from both hops, merged, passed to the reranker
+
+  # Retrieval is two hops by design: hop 1 on the question, hop 2 on the
+  # question plus bridge entities, with fuzzy title matching alongside.
+  multihop:
+    top_k_per_hop: 20 # passages retrieved per hop
+    max_bridge_entities: 5 # entities added to the hop-2 query
+    # Hop 2 is skipped when hop-1 confidence exceeds this; 1.0 always runs it,
+    # which helps comparison questions as well as bridge questions.
+    hop2_confidence_threshold: 1.0
+    entity_extraction_model: "gemma4:31b" # LLM that extracts bridge entities
+    extraction_temperature: 0.0
+    extraction_timeout: 1800 # seconds
+    fuzzy_title_threshold: 70 # RapidFuzz token_set_ratio cutoff for title matching
+
+  # Directory holding the cached FAISS + BM25 indices (built on first run)
+  index_cache_dir: "index_cache_global"
+
+# --- Reranker ---
+reranker:
+  # Cross-encoder that scores (query, passage) and (query, sentence) pairs jointly
+  model_name: "BAAI/bge-reranker-v2-m3"
+  device: "auto"
+
+  # Passages kept after reranking. Going from 5 to 7 lowered EM by about a
+  # third: the extra context crowded out the relevant facts.
+  top_k: 5
+
+  sentence_score_threshold: 0.25 # minimum sigmoid cross-encoder score to keep a sentence
+  max_sentences_per_passage: 5
+  sentence_passage_limit: 3 # select sentences from the top N passages only
+  title_overlap_boost: 0.05 # added to sentence scores when the passage title shares words with the query
+  batch_size: 32
+
+# --- Prompt builder ---
+prompt_builder:
+  include_passage_numbers: true
+  include_sentence_indices: true
+  evidence_first: true # put evidence before the question
+  max_evidence_chars: 9000 # evidence is trimmed to keep the prompt under this length
+  bridge_keywords:
+    ["who", "which", "when", "where", "what", "how", "portrayed", "actor", "character", "played"]
+
+  # Complexity score that routes a question to model_small or model_large.
+  # The weights sum to 1.0.
+  complexity_length_weight: 0.10
+  complexity_length_threshold: 50
+  complexity_keywords_weight: 0.35
+  complexity_confidence_weight: 0.20
+  complexity_sentences_weight: 0.35
+  complexity_sentence_threshold: 5
+  complexity_routing_threshold: 0.50
+
+  temperature_small_model: 0.1
+  temperature_large_model: 0.2
+
+# --- Generator ---
+generator:
+  ollama_base_url: "http://localhost:11434"
+  # v39 used the same model on both routes. Set different models to make the
+  # complexity routing meaningful.
+  model_small: "gemma4:31b"
+  model_large: "gemma4:31b"
+  request_timeout: 1800 # seconds
+  validate_citations: true
+  retry_on_parse_failure: true # one repair call when the JSON cannot be parsed
+  specialist_mode: false # model_large selects facts, model_small answers
+
+# --- Verifier and decider ---
+verifier:
+  enabled: true
+  mode: "overlap" # "overlap" (no extra model), "nli" (roberta-large-mnli), "qa"
+  support_threshold: 0.55 # mean claim score needed to mark an answer supported
+  claim_threshold: 0.45 # per-claim score needed
+  min_supported_claim_ratio: 1.0 # fraction of claims that must be supported
+  max_claims: 6
+
+  # Regenerate when an answer is unsupported. Off for v39: in the team's
+  # verifier experiments, retries lowered EM more than they helped.
+  retry_on_failure: false
+  max_verification_retries: 1
+  retry_score_threshold: 0.4
+
+  # Replace unsupported answers with "Insufficient evidence". Off for
+  # benchmark scoring, where an abstention always scores zero; turn it on for
+  # use cases where a wrong answer costs more than no answer.
+  abstain_on_unsupported: false
+
+# --- Evaluation ---
+eval:
+  limit: null # examples to evaluate (null = all)
+  predictions_dir: "results/predictions"
+  metrics_dir: "results/metrics"
+  # Parallel workers. Match OLLAMA_NUM_PARALLEL to avoid request queuing.
+  parallel_workers: 3
+  checkpoint_interval: 25 # save predictions every N examples
