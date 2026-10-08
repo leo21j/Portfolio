@@ -1,0 +1,7 @@
+.ipynb_checkpoints/
+__pycache__/
+*.pt
+*.h5
+*.ckpt
+# Course-provided file with unverified redistribution terms
+03_Sentiment_Analysis/data/*.tsv
